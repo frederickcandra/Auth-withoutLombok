@@ -13,9 +13,13 @@ import io.jsonwebtoken.io.SerializationException;
 import lombok.RequiredArgsConstructor;
 
 @Component
-@RequiredArgsConstructor
+
 public class UserSerializer implements RedisSerializer<UserRedis> {
     private final ObjectMapper objectMapper;
+
+    public UserSerializer(final ObjectMapper objectMapper) {
+        this.objectMapper = new ObjectMapper();
+    }
 
     @Override
     public byte[] serialize(UserRedis userRedis) throws SerializationException {

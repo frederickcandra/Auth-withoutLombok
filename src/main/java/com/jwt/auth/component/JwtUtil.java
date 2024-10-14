@@ -2,8 +2,6 @@ package com.jwt.auth.component;
 
 import java.io.IOException;
 
-import java.io.IOException;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,11 +21,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Component
-@RequiredArgsConstructor
+
 public class JwtUtil extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserService userService;
+
+    public JwtUtil(final JwtService jwtService, final UserService userService) {
+        this.jwtService = jwtService;
+        this.userService = userService;
+    }
 
     @Override
     protected void doFilterInternal(

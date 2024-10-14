@@ -4,13 +4,12 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EventProducer {
+public class EventProducerService {
 
     private static final String TOPIC = "user-events";
-
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public EventProducer(KafkaTemplate<String, String> kafkaTemplate) {
+    public EventProducerService(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 

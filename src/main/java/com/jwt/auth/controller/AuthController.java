@@ -1,9 +1,8 @@
 package com.jwt.auth.controller;
 
 import com.jwt.auth.request.*;
-import com.jwt.auth.service.EventProducer;
-import com.jwt.auth.service.JwtService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.jwt.auth.service.AuthService;
+import com.jwt.auth.service.EventProducerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jwt.auth.model.User;
 import com.jwt.auth.model.UserRedis;
 import com.jwt.auth.response.JwtResponse;
-import com.jwt.auth.service.implement.AuthServiceImplement;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,21 +20,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/auth")
 @Tag(name = "Authentication Controller", description = "Operations to manage users authentication")
 public class AuthController {
 
-    @Autowired
-    private AuthServiceImplement authService;
+    private final AuthService authService;
 
-    private final EventProducer eventProducer;  // Gunakan final untuk memastikan inisialisasi melalui constructor
+//    private final EventProducerService eventProducerService;  // Gunakan final untuk memastikan inisialisasi melalui constructor
 
-    // Constructor dihasilkan oleh @RequiredArgsConstructor
-    // Spring akan menginjeksi EventProducer ke dalam constructor ini
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @Operation(summary = "Register user and save to Redis")
     @PostMapping("/register")
@@ -68,7 +64,7 @@ public class AuthController {
     })
     public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest loginRequest) {
         JwtResponse jwtResponse = authService.login(loginRequest);
-        eventProducer.sendLoginEvent(loginRequest.getUsername());
+//        eventProducerService.sendLoginEvent(loginRequest.getUsername());
         return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
     }
 
